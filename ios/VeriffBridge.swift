@@ -12,7 +12,10 @@ import Veriff
 extension RNVeriff: VeriffDelegate {
     public func onSession(result: VeriffResult, sessionToken: String) {
         self.sendEvent(withName: "onSession", body: [
-            "result": result,
+            "result": [
+                "description": result.description,
+                "code": result.code.rawValue
+            ],
             "sessionToken": sessionToken
         ])
     }
@@ -45,6 +48,7 @@ extension RNVeriff: VeriffDelegate {
         let conf = VeriffConfiguration(sessionToken: sessionToken, sessionUrl: sessionUrl)
         let veriff = Veriff.shared
         veriff.set(configuration: conf)
+        veriff.delegate = self
     }
     
     @objc
