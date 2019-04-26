@@ -1,5 +1,5 @@
 
-import { NativeEventEmitter, NativeModules } from 'react-native';
+import { NativeEventEmitter, DeviceEventEmitter, NativeModules, Platform } from 'react-native';
 
 class RNVeriff {
     constructor() {
@@ -10,7 +10,10 @@ class RNVeriff {
         }
 
         this.coreModule = RNVeriffCoreModule;
-        this.eventEmmiter = new NativeEventEmitter(this.coreModule);
+        this.eventEmmiter = Platform.select({
+            ios: new NativeEventEmitter(this.coreModule),
+            android: DeviceEventEmitter
+        });
     }
 
     initialize(sessionToken, sessionUrl) {
