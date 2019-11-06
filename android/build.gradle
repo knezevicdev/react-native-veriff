@@ -17,7 +17,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -35,7 +35,7 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
-    implementation('com.veriff:veriff-library:2.1.1') {
+    implementation('com.veriff:veriff-library:2.4.8') {
         exclude group: 'com.veriff', module: 'libwebrtc'
     }
     implementation 'io.probity.sdk:collector:1.0.0'

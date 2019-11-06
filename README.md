@@ -44,7 +44,6 @@
             mavenLocal()
             google()
             jcenter()
-            maven { url "http://dl.bintray.com/argo/sdk" } //probity
             maven { url "https://cdn.veriff.me/android/" } //veriff
             maven {
                 // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
@@ -55,7 +54,7 @@
     ```
 5. Add two dependency imports in the application build.gradle dependency list:
     ```
-        implementation('com.veriff:veriff-library:2.1.1'){
+        implementation('com.veriff:veriff-library:2.4.8'){
             exclude group: 'com.veriff', module: 'libwebrtc'
         }
         implementation 'io.probity.sdk:collector:1.0.0'
@@ -114,15 +113,6 @@
             this.onSubmitListener.remove();
             ...
         }
-    ```
-- Setting Color schema:
-    ```
-        RNVeriff.setColorSchema({
-            headerColor:"#ffff00",
-            footerColor:"#ffff00",
-            backgroundColor:"#000000",
-            controlsColor: "#ffff00"
-        });
     ```
 - Authenticate:
     ```

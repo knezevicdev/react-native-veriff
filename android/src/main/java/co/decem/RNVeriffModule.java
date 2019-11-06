@@ -74,20 +74,6 @@ public class RNVeriffModule extends ReactContextBaseJavaModule {
       }
   }
 
-  @ReactMethod
-  public void setColorSchema(ReadableMap newSchema) {
-      if (newSchema != null) {
-          ColorSchema.Builder schema = new ColorSchema.Builder();
-
-          if(newSchema.hasKey("headerColor")) schema.setHeader(Color.parseColor(newSchema.getString("headerColor")), 1);
-          if(newSchema.hasKey("footerColor")) schema.setFooter(Color.parseColor(newSchema.getString("footerColor")), 1);
-          if(newSchema.hasKey("backgroundColor")) schema.setBackground(Color.parseColor(newSchema.getString("backgroundColor")));
-          if(newSchema.hasKey("controlsColor")) schema.setControlsColor(Color.parseColor(newSchema.getString("controlsColor")));
-
-          veriffSDK.setCustomColorSchema(schema.build());
-      }
-  }
-
   @Override
   public String getName() {
     return "RNVeriff";

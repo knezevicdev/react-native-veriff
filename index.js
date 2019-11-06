@@ -24,10 +24,6 @@ class RNVeriff {
         this.coreModule.startAuthentication();
     }
 
-    setColorSchema(colorSchema) {
-        this.coreModule.setColorSchema(colorSchema);
-    }
-
     addEventListener(event, handler) {
         return this.eventEmmiter.addListener(event, handler);
     }
