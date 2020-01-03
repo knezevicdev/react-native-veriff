@@ -10,35 +10,23 @@
 
 ### Manual installation
 
-
-#### iOS
-1. Add veriff as pod dependency:
-    ```
-        pod 'VeriffSDK', '~> 2.0.0', :modular_headers => true
-    ```
-2. Create empty swift file in order to make library work with React Native    
-3. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-4. Go to `node_modules` ➜ `react-native-veriff` and add `RNVeriff.xcodeproj`
-5. In XCode, in the project navigator, select your project. Add `libRNVeriff.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-6. Run your project (`Cmd+R`)<
-
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
   - Add `import co.decem.RNVeriffPackage;` to the imports at the top of the file
   - Add `new RNVeriffPackage()` to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
-  	```
+  	```gradle
   	include ':react-native-veriff'
   	project(':react-native-veriff').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-veriff/android')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-  	```
+  	```gradle
       compile project(':react-native-veriff')
   	```
 4. Add two new maven (probity, veriff) repository destination under the root build.gradle repositories tag in allprojects bracket.
    It should contain the following two maven repositories:
-    ```
+    ```gradle
     allprojects {
         repositories {
             mavenLocal()
@@ -53,14 +41,14 @@
     }
     ```
 5. Add two dependency imports in the application build.gradle dependency list:
-    ```
-        implementation('com.veriff:veriff-library:2.4.8'){
+    ```gradle
+        implementation('com.veriff:veriff-library:2.7.0'){
             exclude group: 'com.veriff', module: 'libwebrtc'
         }
         implementation 'io.probity.sdk:collector:1.0.0'
     ```
 6. Update the Manifest.xml with the new BroadcastReceiver and add a separate permission for it:
-    ```
+    ```xml
         <uses-permission android:name="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION" />
         ...
         <application>
@@ -80,16 +68,19 @@
 ## Usage
 
 1. Import library and result constants:
-    ```
+    ```js
         import RNVeriff, {VeriffResultCode} from 'react-native-veriff';
     ```
 2. Initialize library:
 
-    ```
+    ```js
         componentDidMount() {
             ...
             try {
-                RNVeriff.initialize(SESSION_TOKEN, SESSION_URL);
+                RNVeriff.initialize(SESSION_TOKEN, SESSION_URL, {
+                    themeColor: "#c2c2c2",
+                    navigationBarImage: require('./test.jpeg'),
+                });
             } catch (error) {
                 Alert.alert("Error while initializing Veriff.");
             }
@@ -97,17 +88,17 @@
         }
     ```
 - Setting event listener:
-    ```
+    ```js
         this.onSubmitListener = RNVeriff.addEventListener("onSession", (result) => {
             switch(result.code) {
-            case VeriffResultCode.STATUS_USER_CANCELED: 
-                console.log("User canceled");
-            break;
+                case VeriffResultCode.STATUS_USER_CANCELED: 
+                    console.log("User canceled");
+                break;
             }
         }); 
     ```
     * Don't forget to remove listener in componentWillUnmount
-    ```
+    ```js
         componentWillUnmount() {
             ... 
             this.onSubmitListener.remove();
@@ -115,6 +106,10 @@
         }
     ```
 - Authenticate:
-    ```
+    ```js
         RNVeriff.startAuthentication();
     ```
+
+3. Add branding assets
+
+- Add assets with names `notificationIcon` and `toolbarIcon` to Android resources folder.
