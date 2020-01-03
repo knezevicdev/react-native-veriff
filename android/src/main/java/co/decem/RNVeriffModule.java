@@ -1,9 +1,10 @@
 
 package co.decem;
 
-import com.facebook.react.bridge.ActivityEventListener;
+import android.app.Activity;
+import android.graphics.Color;
+
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -12,13 +13,8 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.util.Log;
-import mobi.lab.veriff.data.ColorSchema;
+import mobi.lab.veriff.data.Branding;
 import mobi.lab.veriff.data.Veriff;
-import mobi.lab.veriff.data.VeriffConstants;
 
 public class RNVeriffModule extends ReactContextBaseJavaModule {
 
@@ -50,9 +46,20 @@ public class RNVeriffModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void initialize(String sessionToken, String sessionUrl, final Promise promise) {
+  public void initialize(String sessionToken, String sessionUrl, ReadableMap options, final Promise promise) {
     veriffSDK = new Veriff.Builder(sessionUrl, sessionToken);
     this.sessionToken = sessionToken;
+
+    int toolbarIconId = reactContext.getResources().getIdentifier("toolbarIcon", "drawable", reactContext.getPackageName());
+    int notificationIconId = reactContext.getResources().getIdentifier("notificationIcon", "drawable", reactContext.getPackageName());
+
+    final Branding branding = new Branding.Builder()
+          .setThemeColor(Color.parseColor(options.getString("themeColor")))
+          .setToolbarIcon(toolbarIconId)
+          .setNotificationIcon(notificationIconId)
+          .build();
+
+    veriffSDK.setBranding(branding);
 
     promise.resolve("Successfully initialized.");
   }
