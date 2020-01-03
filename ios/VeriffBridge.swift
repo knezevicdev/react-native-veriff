@@ -44,8 +44,10 @@ extension RNVeriff: VeriffDelegate {
     }
     
     @objc
-    public func initVeriff(sessionToken: String, sessionUrl: String) {
-        let conf = VeriffConfiguration(sessionToken: sessionToken, sessionUrl: sessionUrl)
+    public func initVeriff(sessionToken: String, sessionUrl: String, themeColor: String, navigationbarImage: UIImage) {
+        var conf = VeriffConfiguration(sessionToken: sessionToken, sessionUrl: sessionUrl)!
+        conf.branding = Branding(themeColor: colorFromHex(hexString: themeColor), navigationBarImage: navigationbarImage)
+        
         let veriff = Veriff.shared
         veriff.set(configuration: conf)
         veriff.delegate = self
@@ -55,16 +57,5 @@ extension RNVeriff: VeriffDelegate {
     public func startAuthentication() {
         let veriff = Veriff.shared
         veriff.startAuthentication()
-    }
-    
-    @objc
-    public func changeColorSchema(schema: NSDictionary) {
-        if((schema.object(forKey: "controlsColor")) != nil) {
-            let colorSchema = ColorSchema()
-            colorSchema.controlsColor = colorFromHex(hexString: schema.value(forKey: "controlsColor") as! String)
-            let veriff = Veriff.shared
-            veriff.set(colorSchema: colorSchema)
-        }
-
     }
 }

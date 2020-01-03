@@ -1,5 +1,5 @@
 
-import { NativeEventEmitter, DeviceEventEmitter, NativeModules, Platform } from 'react-native';
+import { NativeEventEmitter, DeviceEventEmitter, NativeModules, Platform, Image } from 'react-native';
 
 class RNVeriff {
     constructor() {
@@ -16,8 +16,11 @@ class RNVeriff {
         });
     }
 
-    initialize(sessionToken, sessionUrl) {
-        return this.coreModule.initialize(sessionToken, sessionUrl);
+    initialize(sessionToken, sessionUrl, options) {
+        return this.coreModule.initialize(sessionToken, sessionUrl, {
+            themeColor: options.themeColor,
+            navigationBarImage: Image.resolveAssetSource(options.navigationBarImage),
+        });
     }
 
     startAuthentication() {

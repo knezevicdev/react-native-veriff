@@ -15,10 +15,14 @@ RCT_EXPORT_MODULE()
     return @[@"onSession"];
 }
 
-RCT_REMAP_METHOD(initialize, sessionToken:(NSString *)sessionToken sessionUrl:(NSString *) sessionUrl initializeWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(initialize, sessionToken:(NSString *)sessionToken sessionUrl:(NSString *) sessionUrl options:(NSDictionary *)options initializeWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
-        [self initVeriffWithSessionToken:sessionToken sessionUrl:sessionUrl];
+        NSDictionary *rawImage = [options valueForKey:@"navigationBarImage"];
+        UIImage *navigationBarImage = [RCTConvert UIImage: rawImage];
+        NSString *themeColor = [options valueForKey:@"themeColor"];
+        
+        [self initVeriffWithSessionToken:sessionToken sessionUrl:sessionUrl themeColor:themeColor navigationbarImage:navigationBarImage];
         return resolve(@"Successfully initialized.");
     } @catch (NSException *exception) {
         NSMutableDictionary * info = [NSMutableDictionary dictionary];
@@ -36,11 +40,6 @@ RCT_REMAP_METHOD(initialize, sessionToken:(NSString *)sessionToken sessionUrl:(N
 RCT_EXPORT_METHOD(startAuthentication)
 {
     [self startAuthentication];
-}
-
-RCT_EXPORT_METHOD(setColorSchema:(NSDictionary *)colorSchema)
-{
-    [self changeColorSchemaWithSchema:colorSchema];
 }
 
 @end
